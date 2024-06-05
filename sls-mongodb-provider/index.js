@@ -11,15 +11,30 @@ class MongoDBProvider {
     this.provider = this;
 
     this.serverless.setProvider('mongodb', this);
-    this.commands = {};
+    this.commands = {
+      offline: {
+        usage: 'Run the service locally',
+        lifecycleEvents: ['start', 'stop'],
+        commands: {
+          start: {
+            lifecycleEvents: ['init', 'end']
+          },
+          stop: {
+            lifecycleEvents: ['init', 'end']
+          }
+        }
+      }
+    };
 
     this.hooks = {
       'before:deploy:deploy': this.beforeDeploy.bind(this),
       'after:deploy:deploy': this.afterDeploy.bind(this),
       'before:remove:remove': this.beforeRemove.bind(this),
       'after:remove:remove': this.afterRemove.bind(this),
-      'before:offline:start': this.beforeOfflineStart.bind(this),
-      'after:offline:start:end': this.afterOfflineEnd.bind(this),
+      'offline:start:init': this.beforeOfflineStart.bind(this),
+      'offline:start:end': this.afterOfflineStart.bind(this),
+      'offline:stop:init': this.beforeOfflineStop.bind(this),
+      'offline:stop:end': this.afterOfflineStop.bind(this),
     };
 
     this.changeStream = null;
@@ -28,8 +43,6 @@ class MongoDBProvider {
     this.serverless.cli.log(`MONGODB_ATLAS_PROJECT_ID: ${process.env.MONGODB_ATLAS_PROJECT_ID}`);
     this.serverless.cli.log(`MONGODB_ATLAS_PUBLIC_KEY: ${process.env.MONGODB_ATLAS_PUBLIC_KEY}`);
     this.serverless.cli.log(`MONGODB_ATLAS_PRIVATE_KEY: ${process.env.MONGODB_ATLAS_PRIVATE_KEY}`);
-    this.serverless.cli.log(`MONGODB_ATLAS_REGION: ${process.env.MONGODB_ATLAS_REGION}`);
-    this.serverless.cli.log(`MONGODB_ATLAS_TIER: ${process.env.MONGODB_ATLAS_TIER}`);
   }
 
   static getProviderName() {
@@ -70,11 +83,24 @@ class MongoDBProvider {
   async beforeOfflineStart() {
     this.serverless.cli.log('Starting offline mode...');
     // Add any setup needed for offline mode here
+    const command = `atlas deployments setup --type local --force`
+    this.execCommand(command);
   }
 
-  async afterOfflineEnd() {
+  async afterOfflineStart() {
+    this.serverless.cli.log('After offline start');
+
+  }
+
+  async beforeOfflineStop() {
     this.serverless.cli.log('Stopping offline mode...');
-    // Add any cleanup needed after offline mode here
+    
+    const command = `atlas deployments delete --type local --force`
+    this.execCommand(command);
+  }
+
+  async afterOfflineStop() {
+    this.serverless.cli.log('After offline stop');
   }
 
   async deployCluster() {

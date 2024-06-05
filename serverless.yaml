@@ -3,10 +3,6 @@ service: my-mongodb-service
 provider:
   name: mongodb
   runtime: nodejs14.x
-  environment:
-    MONGODB_ATLAS_PROJECT_ID: id 
-    MONGODB_ATLAS_PUBLIC_KEY: public 
-    MONGODB_ATLAS_PRIVATE_KEY: private
 
 resources:
   Resources:
