@@ -3,6 +3,8 @@
 const { execSync } = require('child_process');
 require('dotenv').config();
 
+const ClusterResource = "AtlasCluster"
+
 class MongoDBProvider {
   constructor(serverless, options) {
     this.serverless = serverless;
@@ -66,12 +68,38 @@ class MongoDBProvider {
 
   async deploy() {
     this.serverless.cli.log('Running deploy...');
-    await this.deployCluster();
+    const resources = this.serverless.service.resources
+    const promises = Object.values(resources).map((resource) => {
+      if (resource.type === ClusterResource) {
+        return this.deployCluster(resource);
+      } 
+      // add additional resource types here if necessary
+    }); 
+
+    try {
+      await Promise.all(promises);
+      this.serverless.cli.log('All resources deployed successfully');
+    } catch (error) {
+        this.serverless.cli.log(`Error deploying resources: ${error.message}`);
+    }
   }
 
   async remove() {
     this.serverless.cli.log('Running remove...');
-    await this.removeCluster();
+    const resources = this.serverless.service.resources
+    const promises = Object.values(resources).map((resource) => {
+      if (resource.type === ClusterResource) {
+        return this.removeCluster(resource);
+      }
+      // add additional resource types here if necessary
+    }); 
+
+    try {
+      await Promise.all(promises);
+      this.serverless.cli.log('All resources removed successfully');
+    } catch (error) {
+        this.serverless.cli.log(`Error removing resources: ${error.message}`);
+    }
   }
 
   async offlineStart() {
@@ -88,16 +116,14 @@ class MongoDBProvider {
     this.execCommand(command);
   }
 
-  async deployCluster() {
-    const clusterConfig = this.serverless.service.resources.Resources.MyMongoDBCluster;
-    const command = `atlas clusters create ${clusterConfig.Properties.name} --region ${clusterConfig.Properties.region} --tier ${clusterConfig.Properties.instanceSizeName} --provider ${clusterConfig.Properties.providerName} --mdbVersion ${clusterConfig.Properties.mongoDBVersion}`;
+  async deployCluster(clusterConfig) {
+    const command = `atlas clusters create ${clusterConfig.name} --region ${clusterConfig.region} --tier ${clusterConfig.tier} --provider ${clusterConfig.provider} --mdbVersion ${clusterConfig.version}`;
 
     this.execCommand(command);
   }
 
-  async removeCluster() {
-    const clusterConfig = this.serverless.service.resources.Resources.MyMongoDBCluster;
-    const command = `atlas clusters delete ${clusterConfig.Properties.name} --force`;
+  async removeCluster(clusterConfig) {
+    const command = `atlas clusters delete ${clusterConfig.name} --force`;
 
     this.execCommand(command);
   }

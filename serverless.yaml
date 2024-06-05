@@ -5,28 +5,20 @@ provider:
   runtime: nodejs14.x
 
 resources:
-  Resources:
-    MyMongoDBCluster:
-      Type: "Custom::MongoDBCluster"
-      Properties:
-        name: sls-cluster 
-        region: US_EAST_1 
-        instanceSizeName: M10 
-        providerName: AWS
-        mongoDBVersion: "7.0"
-
-# functions:
-#   createTrigger:
-#     handler: handler.createTrigger
-#     name: myTrigger
-#     type: DATABASE
-#     config:
-#       database: myDatabase
-#       collection: myCollection
-#       operationTypes:
-#         - INSERT
-#         - UPDATE
-#     function_name: myFunction
+  east-cluster:
+    type: AtlasCluster
+    name: east-cluster
+    region: US_EAST_1
+    tier: M10
+    provider: AWS
+    version: "7.0"
+  west-cluster:
+    type: AtlasCluster
+    name: west-cluster
+    region: US_WEST
+    tier: M20
+    provider: AZURE
+    version: "7.0"
 
 plugins:
 - serverless-dotenv-plugin
