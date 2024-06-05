@@ -1,4 +1,4 @@
-# Prototype SLS MongoDB Atlas Provider
+# Prototype Serverless MongoDB Atlas Provider
 
 ## Description
 This is a prototype of a MongoDB Atlas provider for the Serverless framework. It will allow you to deploy a cluster, delete a cluster, and start/stop a local development cluster. The cluster specs for the deployed cluster may be changed in the `serverless.yaml` file under the `resources` section. 
