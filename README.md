@@ -8,7 +8,7 @@ This is a prototype of a MongoDB Atlas provider for the Serverless framework. It
 Copy the sample `env` file.
 `cp env.sample .env`
 
-Change the values to match your `Organization`, `Project`, `Public` and `Private` API keys. Note that the API keys used were Project level keys.
+Change the values to match your `Organization`, `Project`, `Public` and `Private` API keys. Note that the [API keys](https://www.mongodb.com/docs/atlas/configure-api-access/#grant-programmatic-access-to-service) used were Project level keys.
 ```bash
 MONGODB_ATLAS_ORG_ID=<org id>
 MONGODB_ATLAS_PROJECT_ID=<proj id>
