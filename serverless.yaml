@@ -1,0 +1,39 @@
+service: my-mongodb-service
+
+provider:
+  name: mongodb
+  runtime: nodejs14.x
+  environment:
+    MONGODB_ATLAS_PROJECT_ID: id 
+    MONGODB_ATLAS_PUBLIC_KEY: public 
+    MONGODB_ATLAS_PRIVATE_KEY: private
+
+resources:
+  Resources:
+    MyMongoDBCluster:
+      Type: "Custom::MongoDBCluster"
+      Properties:
+        name: sls-cluster 
+        region: US_EAST_1 
+        instanceSizeName: M10 
+        providerName: AWS
+        mongoDBVersion: "7.0"
+
+# functions:
+#   createTrigger:
+#     handler: handler.createTrigger
+#     name: myTrigger
+#     type: DATABASE
+#     config:
+#       database: myDatabase
+#       collection: myCollection
+#       operationTypes:
+#         - INSERT
+#         - UPDATE
+#     function_name: myFunction
+
+plugins:
+- serverless-dotenv-plugin
+- ./sls-mongodb-provider
+
+
