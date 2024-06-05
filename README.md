@@ -15,8 +15,8 @@ MONGODB_ATLAS_PROJECT_ID=<proj id>
 MONGODB_ATLAS_PUBLIC_API_KEY=<pub proj key>
 MONGODB_ATLAS_PRIVATE_API_KEY=<priv proj key>
 ```
-Install dependencies
-`npm install`
+Install dependencies via
+```npm install```
 
 
 ## Deploy
