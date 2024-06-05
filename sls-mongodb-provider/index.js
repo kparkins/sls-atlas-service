@@ -50,7 +50,7 @@ class MongoDBProvider {
   }
 
   setupCli() {
-    // Add logic here to handle ensuring the CLI is installed or installing it. 
+    // Add logic here to handle ensuring the CLI is installed or to install it. 
     this.serverless.cli.log("Pull binary from -- https://fastdl.mongodb.org/mongocli/mongodb-atlas-cli_1.23.0_macos_arm64.zip")
   }
 
