@@ -66,12 +66,12 @@ class MongoDBProvider {
   }
 
   async deploy() {
-    this.serverless.cli.log('Running before:deploy:deploy hook...');
+    this.serverless.cli.log('Running deploy...');
     await this.deployCluster();
   }
 
   async remove() {
-    this.serverless.cli.log('Running before:remove:remove hook...');
+    this.serverless.cli.log('Running remove...');
     await this.removeCluster();
   }
 
