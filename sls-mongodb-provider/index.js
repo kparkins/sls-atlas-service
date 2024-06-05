@@ -35,9 +35,10 @@ class MongoDBProvider {
     this.changeStream = null;
     this.mongoClient = null;
     this.serverless.cli.log('Loaded Environment Variables:');
+    this.serverless.cli.log(`MONGODB_ATLAS_ORG_ID: ${process.env.MONGODB_ATLAS_ORG_ID}`);
     this.serverless.cli.log(`MONGODB_ATLAS_PROJECT_ID: ${process.env.MONGODB_ATLAS_PROJECT_ID}`);
-    this.serverless.cli.log(`MONGODB_ATLAS_PUBLIC_KEY: ${process.env.MONGODB_ATLAS_PUBLIC_KEY}`);
-    this.serverless.cli.log(`MONGODB_ATLAS_PRIVATE_KEY: ${process.env.MONGODB_ATLAS_PRIVATE_KEY}`);
+    this.serverless.cli.log(`MONGODB_ATLAS_PUBLIC_KEY: ${process.env.MONGODB_ATLAS_PUBLIC_API_KEY}`);
+    this.serverless.cli.log(`MONGODB_ATLAS_PRIVATE_KEY: ${process.env.MONGODB_ATLAS_PRIVATE_API_KEY}`);
   }
 
   static getProviderName() {
