@@ -26,9 +26,13 @@ class MongoDBProvider {
     };
 
     this.hooks = {
+      'before:deploy:deploy': this.setupCli.bind(this),
       'deploy:deploy': this.deploy.bind(this),
+      'before:remove:remove': this.setupCli.bind(this),
       'remove:remove': this.remove.bind(this),
+      'before:offline:start:start': this.setupCli.bind(this),
       'offline:start:start': this.offlineStart.bind(this),
+      'before:offline:stop:stop': this.setupCli.bind(this),
       'offline:stop:stop': this.offlineStop.bind(this),
     };
 
@@ -43,6 +47,10 @@ class MongoDBProvider {
 
   static getProviderName() {
     return "mongodb"
+  }
+
+  setupCli() {
+    this.serverless.cli.log("Pull binary from -- https://fastdl.mongodb.org/mongocli/mongodb-atlas-cli_1.23.0_macos_arm64.zip")
   }
 
   execCommand(command) {
